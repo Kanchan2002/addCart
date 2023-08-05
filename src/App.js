@@ -1,23 +1,44 @@
-import logo from './logo.svg';
+import { useState } from 'react';
 import './App.css';
+import Takein from './Components/Takein';
+import Showlist from './Components/Showlist';
 
 function App() {
+  const Data = [
+    {
+      id : 1,
+      productid: 'e1',
+      name: 'Toilet Paper',
+      amount: 94.12,
+    },
+  ];
+  const [initialdata, setData] = useState(Data);
+  const [initialamount,setamount] = useState(0);
+  const getData = (getdata)=>{
+        setamount(initialamount+parseInt(getdata.amount) );
+        const newData = {
+          ...getdata,
+          id: Math.random().toString()
+        }
+        setData((prevdata) => [...prevdata, newData]);
+  } 
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Takein onSavedata={getData}/>
+      {
+       
+        initialdata.map((data) => (
+          <Showlist
+            key={data.id}
+            productId={data.productid}
+            productAmount={data.amount}
+            productName={data.name}
+          />
+          
+        ))
+      
+      }
+      <p>Worth of product {initialamount}</p>
     </div>
   );
 }
